@@ -88,7 +88,7 @@ public class MigrateStateTool {
 
     private static void printHelp() {
         System.out.println("Usage:");
-        System.out.println("\t-uid                pulsar source uid");
+        System.out.println("\t-uid                flink uid for pulsar source");
         System.out.println("\t-savepointPath      flink savepoint path");
         System.out.println("\t-newStatePath      new flink savepoint path");
         System.exit(-1);
