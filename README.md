@@ -12,7 +12,7 @@ Usage:
 
 
 This tool is used to migrate from pulsar-flink-connector versions prior to `2.4.27` to [pulsar-flink-connector version `2.5.8.3`](https://repo1.maven.org/maven2/io/streamnative/connectors/).
-At the same time, the Pulsar client version will be upgraded from `1.9.x` to `1.11.x`, the Pulsar client version will be upgraded from `2.5.2` to `2.7.0`.
+At the same time, the Flink client version will be upgraded from `1.9.x` to `1.11.x`, the Pulsar client version will be upgraded from `2.5.2` to `2.7.0`.
 
 This upgrade tool does not support batch flink job upgrade. When you need batch, please call it externally from batch.
 It needs to be submitted as a Flink job for upgrade.
