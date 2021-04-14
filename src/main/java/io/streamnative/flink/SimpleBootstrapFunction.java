@@ -36,8 +36,8 @@ import org.apache.pulsar.client.api.MessageId;
  */
 public class SimpleBootstrapFunction extends StateBootstrapFunction<Tuple2<TopicSubscription, MessageId>> implements ResultTypeQueryable<Tuple2<TopicSubscription, MessageId>> {
 
-    public static final String OFFSETS_STATE_NAME = "topic-offset-states";
-    public static final String NEW_OFFSETS_STATE_NAME = "new-topic-partition-offset-states";
+    public static final String OFFSETS_STATE_NAME = "topic-partition-offset-states";
+    public static final String NEW_OFFSETS_STATE_NAME = "topic-offset-states";
 
     private ListState<Tuple2<TopicSubscription, MessageId>> state;
 
