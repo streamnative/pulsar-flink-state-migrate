@@ -20,6 +20,6 @@ It needs to be submitted as a Flink job for upgrade.
 example:
 `bin/flink run pulsar-flink-state-migrate-1.11-0.0.1.jar -uid pulsar-source-id -savepointPath savepoint/savepoint-1af2b3-a7db17bbd4b1 -newStatePath /new-savepoint`
 
-`uid` is the uid set for Pulsar Source in the user code.
+`uid` is the multiple uid set for Pulsar Source in the user code. multiple uid use `,` join, example: `pulsar-source-id,pulsar-source-id2,pulsar-source-id3`
 `savepointPath` parameter is the old savepoint directory or flink state`_metadata` file
 The `newStatePath` parameter is the output directory, where the `_metadata` file will be generated
