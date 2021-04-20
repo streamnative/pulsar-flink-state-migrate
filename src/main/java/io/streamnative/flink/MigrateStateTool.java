@@ -28,6 +28,7 @@ import org.apache.flink.state.api.Savepoint;
 import org.apache.flink.streaming.connectors.pulsar.internal.TopicSubscription;
 
 import org.apache.pulsar.client.api.MessageId;
+import org.apache.pulsar.shade.org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -57,6 +58,16 @@ public class MigrateStateTool {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         final ExistingSavepoint existingSavepoint = Savepoint.load(env, savepointPath, new MemoryStateBackend());
 
+        final String[] uidArrays = StringUtils.split(uid, ",");
+        for (String id : uidArrays) {
+            final BootstrapTransformation<Tuple2<TopicSubscription, MessageId>> transform = getNewStateTransformation(id, existingSavepoint);
+            existingSavepoint.removeOperator(id).withOperator(id, transform);
+        }
+        existingSavepoint.write(newStatePath);
+        env.execute();
+    }
+
+    private static BootstrapTransformation<Tuple2<TopicSubscription, MessageId>> getNewStateTransformation(String uid, ExistingSavepoint existingSavepoint) throws Exception {
         final DataSet<Tuple2<String, MessageId>> tuple2DataSet = existingSavepoint.readUnionState(uid, SimpleBootstrapFunction.OFFSETS_STATE_NAME, TypeInformation.of(new TypeHint<Tuple2<String, MessageId>>() {
         }));
         tuple2DataSet.print();
@@ -78,12 +89,7 @@ public class MigrateStateTool {
         }
         final BootstrapTransformation<Tuple2<TopicSubscription, MessageId>> transform = OperatorTransformation.bootstrapWith(result)
                 .transform(processFunction);
-
-        existingSavepoint
-                .removeOperator(uid)
-                .withOperator(uid, transform)
-                .write(newStatePath);
-        env.execute();
+        return transform;
     }
 
     private static void printHelp() {
